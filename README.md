@@ -6,3 +6,4 @@ Items in todo listed as project progress.
 - .package.json file created to the working directory.
 - server.js file added to the working directory.
 - dht-sensors.js file added 
+- Dockerize the app. Dockerfile added
