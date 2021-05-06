@@ -1,5 +1,5 @@
 # Final assignment of Devops basic course
-Todo list added as soon as task added.
+Items in todo listed as project progress.
 - Create repository and add slack hook.
 - Clone repo to local machine.
 - Add .gitignore and copy content from the todo steps
