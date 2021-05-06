@@ -4,7 +4,7 @@
 #Comment line above and use this one locally
 FROM node:10  
 
-WORKDIR app
+WORKDIR /app
 
 COPY . /app
 
