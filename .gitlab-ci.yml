@@ -44,7 +44,7 @@ raspi-deploy-prod:
     - ls -alh
     - pwd
     - ssh cluster@$RASPI_HOST docker rm -f $GITLAB_USER_LOGIN 2>/dev/null || true
-    - ssh cluster@$RASPI_HOST docker run -p 8080:8888 --name $GITLAB_USER_LOGIN \
+    - ssh cluster@$RASPI_HOST docker run -p 8082:8888 --name $GITLAB_USER_LOGIN \
      -m 100M \
      $GITLAB_USER_LOGIN/weatherstation:latest
     - ssh cluster@$RASPI_HOST docker rm -f $GITLAB_USER_LOGIN 2>/dev/null || true
