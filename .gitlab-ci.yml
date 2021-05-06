@@ -1,1 +1,50 @@
 
+# This file is a template, and might need editing before it works on your project.
+variables:
+  RASPI_HOST: 10.50.91.12
+  NFS_SHARE: /nfs/cluster # type without the trailing /
+
+stages:
+  - build
+  - test
+  - deploy
+
+cross-compile-master:
+  tags: 
+    - shell
+  # Official docker image.
+  stage: build
+  script:
+    - whoami
+    - pwd
+    - ls -alh
+    - ssh cluster@10.50.91.12 mkdir -p /home/cluster/$GITLAB_USER_LOGIN/
+    - scp -r ./* cluster@$RASPI_HOST:~/$GITLAB_USER_LOGIN/
+    - ssh cluster@10.50.91.12 ls -alh /home/cluster/$GITLAB_USER_LOGIN/
+    - ssh cluster@$RASPI_HOST "cd /home/cluster/$GITLAB_USER_LOGIN/ && docker build -t $GITLAB_USER_LOGIN/weatherstation ."
+  only:
+    - master
+
+raspi-deploy-test:
+  stage: test
+  tags:
+    - shell
+  script:
+    - ssh cluster@$RASPI_HOST docker rm -f $GITLAB_USER_LOGIN 2>/dev/null || true
+    - ssh cluster@$RASPI_HOST docker run --name $GITLAB_USER_LOGIN  --device /dev/mem:/dev/mem --privileged $GITLAB_USER_LOGIN/weatherstation:latest npm test
+
+raspi-deploy-prod:
+  stage: deploy
+  when: manual
+  tags:
+    - shell
+  script: 
+    - whoami
+    - hostname
+    - ls -alh
+    - pwd
+    - ssh cluster@$RASPI_HOST docker rm -f $GITLAB_USER_LOGIN 2>/dev/null || true
+    - ssh cluster@$RASPI_HOST docker run -p 8080:8888 --name $GITLAB_USER_LOGIN \
+     -m 100M \
+     $GITLAB_USER_LOGIN/weatherstation:latest
+    - ssh cluster@$RASPI_HOST docker rm -f $GITLAB_USER_LOGIN 2>/dev/null || true
