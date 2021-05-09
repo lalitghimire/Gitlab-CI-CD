@@ -16,7 +16,7 @@
     "rest",
     "api"
   ],
-  "author": "Etunimi Sukunimi <etunimisukunimi@kamk.fi>",
+  "author": "Lalit Ghimire lalitghimire@kamk.fi>",
   "license": "MIT",
   "dependencies": {
     "chai": "^4.2.0",
